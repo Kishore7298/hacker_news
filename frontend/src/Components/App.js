@@ -6,11 +6,9 @@ import Preloader from './Preloader/Preloader';
 import Navbar from './Navbar/Navbar';
 import './App.css';
 
-const Login = lazy(()=>import('./Login/Login'));
-const Signup = lazy(()=>import('./Signup/Signup'));
+const Login = lazy(()=>import('./Authentication/Login/Login'));
+const Signup = lazy(()=>import('./Authentication/Signup/Signup'));
 const CommentContainer = lazy(()=>import('./CommentContainer/CommentContainer'));
-
-
 
 const App = ()=>{
     return (
