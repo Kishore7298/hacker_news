@@ -15,7 +15,7 @@ const Comment = (props) => {
     let comments = useSelector(state => state.comments );
 
     const renderNestedComment = () => {
-        let commments = comments.comments
+        let commments = comments.comments;
 
         if(list.length === 0){
             return null;
@@ -32,7 +32,6 @@ const Comment = (props) => {
     }
     
     
-    console.log(props);
     const renderCommentBody = () => {
         if(mode === "") {
             return (

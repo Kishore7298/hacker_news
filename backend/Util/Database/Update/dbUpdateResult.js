@@ -1,5 +1,5 @@
-const dbConnection = require('./getDbConnection');
-const dbUpdate = require('./getDbUpdate');
+const dbConnection = require('../dbConnection');
+const dbUpdate = require('./dbUpdate');
 
 module.exports = async(collection, query, updateObject)=>{
     const connectionResult = await dbConnection();

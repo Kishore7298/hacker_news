@@ -13,7 +13,6 @@ export const setCurrentUser = decoded  =>{
 export const login =  (data) => async dispatch => {
     try {
         const res = await axios.post(`${IP}/api/v1/auth/login`, data)
-        console.log(res.data);
         if (res.data.token) {
             const { token } = res.data;
             //set token to local storage
