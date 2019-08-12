@@ -14,7 +14,6 @@ const ReplyModal = (props)=>{
 
     let [value, setValue] = useState("");
     let { replyModal, setReplyModal, userInfo } = props;
-    console.log(userInfo);
 
     const onSubmit = () => { 
         let { _id, user_name } = userInfo;

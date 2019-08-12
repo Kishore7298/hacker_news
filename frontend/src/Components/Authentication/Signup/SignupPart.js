@@ -14,7 +14,6 @@ const SignupPart = (props) => {
 
     const onsubmit = async() => {
         let result = await signup({userName, email, password});
-        console.log(result);
         if(result){
             props.history.push('/login');
         }
