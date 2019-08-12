@@ -1,4 +1,5 @@
 import React, { useState  } from 'react';
+import { useSelector } from 'react-redux';
 import { Typography, Avatar, IconButton} from "@material-ui/core";
 import { Edit, Reply } from "@material-ui/icons";
 
@@ -6,18 +7,32 @@ import './Comment.css';
 import EditInput from '../EditInput/EditInput';
 
 const Comment = (props) => {
-    let [mode, setMode] = useState("")
+    let [mode, setMode] = useState("");
+
+    let { _id, userName, message, lastUpdatedTime, list } = props.comment;
+    let { setReplyModal, replyModal } = props;
+
+    let comments = useSelector(state => state.comments );
 
     const renderNestedComment = () => {
-        if(props.repeat === "true"){
-            return (
-                <Comment repeat="false" />
-            )
+        let commments = comments.comments
+
+        if(list.length === 0){
+            return null;
+        } else {
+            return list.map((comment)=>{
+                let selectedComment = commments.filter((item)=>item._id === comment);
+                selectedComment = selectedComment[0];
+                return (
+                    <Comment comment={selectedComment} replyModal={replyModal} setReplyModal={setReplyModal} />
+                )
+            })
         }
+        
     }
     
-    let { userName, message, lastUpdatedTime } = props.comment;
-
+    
+    console.log(props);
     const renderCommentBody = () => {
         if(mode === "") {
             return (
@@ -29,7 +44,7 @@ const Comment = (props) => {
                         <IconButton onClick={()=>{setMode("edit")}}>
                             <Edit />
                         </IconButton>
-                        <IconButton onClick={()=>{}}>
+                        <IconButton onClick={()=>{setReplyModal(_id)}}>
                             <Reply />
                         </IconButton>
                     </div>
@@ -37,7 +52,7 @@ const Comment = (props) => {
             )
         } else {
            return (
-            <EditInput mode={mode} id={props._id} message={message} setMode={setMode}/>
+            <EditInput mode={mode} id={_id} message={message} setMode={setMode}/>
            )
         }
         
@@ -49,7 +64,7 @@ const Comment = (props) => {
     }
 
     return (
-        <div className="comment-container mt-4">
+        <div className="comment-container mt-2">
             <div className="comment-head">
                 <Avatar>
                     {userName[0]}
@@ -70,6 +85,7 @@ const Comment = (props) => {
                 </div>
                 <div className="comment-message">
                     {renderCommentBody()}
+                    {renderNestedComment()}
                 </div>
             </div>
         </div>

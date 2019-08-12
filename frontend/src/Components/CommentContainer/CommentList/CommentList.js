@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState  } from 'react';
 import { Paper, Typography } from '@material-ui/core';
 import { makeStyles } from "@material-ui/core/styles";
 
 import Comment from '../Comment/Comment';
+import ReplyModal from '../ReplyModal/ReplyModal';
 
 const useStyles = makeStyles(theme => ({
     root:{
@@ -17,10 +18,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const CommentList = (props) => {
-    
+    let [ replyModal, setReplyModal ] = useState("")
     const renderComments = () => {
         return props.statuses.map((comment)=>{
-            return <Comment comment={comment}/>
+            return <Comment comment={comment} replyModal={replyModal} setReplyModal={setReplyModal} />
         })
     }
     const classes = useStyles();
@@ -32,7 +33,7 @@ const CommentList = (props) => {
                 </Typography>
                 {renderComments()}
             </Paper>
-
+            <ReplyModal replyModal={replyModal} setReplyModal={setReplyModal} userInfo={props.userInfo}/>
         </div>
     )
 }
