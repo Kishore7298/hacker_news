@@ -1,10 +1,12 @@
-import React from 'react';
-import { Typography, Avatar, IconButton } from "@material-ui/core";
+import React, { useState  } from 'react';
+import { Typography, Avatar, IconButton} from "@material-ui/core";
 import { Edit, Reply } from "@material-ui/icons";
 
 import './Comment.css';
+import EditInput from '../EditInput/EditInput';
 
 const Comment = (props) => {
+    let [mode, setMode] = useState("")
 
     const renderNestedComment = () => {
         if(props.repeat === "true"){
@@ -13,13 +15,38 @@ const Comment = (props) => {
             )
         }
     }
+    
+    let { userName, message, lastUpdatedTime } = props.comment;
+
+    const renderCommentBody = () => {
+        if(mode === "") {
+            return (
+                <>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                        {message}
+                    </Typography>
+                    <div className="comment-buttons">
+                        <IconButton onClick={()=>{setMode("edit")}}>
+                            <Edit />
+                        </IconButton>
+                        <IconButton onClick={()=>{}}>
+                            <Reply />
+                        </IconButton>
+                    </div>
+                </>
+            )
+        } else {
+           return (
+            <EditInput mode={mode} id={props._id} message={message} setMode={setMode}/>
+           )
+        }
+        
+    }
 
     const getTime = (timestamp)=>{
         let time = new Date(parseInt(timestamp));
         return time.getHours() + ":" + time.getMinutes() + ":" + time.getSeconds();
     }
-
-    let { userName, message, lastUpdatedTime } = props.comment;
 
     return (
         <div className="comment-container mt-4">
@@ -42,17 +69,7 @@ const Comment = (props) => {
                     </div>
                 </div>
                 <div className="comment-message">
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        {message}
-                    </Typography>
-                    <div className="comment-buttons">
-                        <IconButton>
-                            <Edit />
-                        </IconButton>
-                        <IconButton>
-                            <Reply />
-                        </IconButton>
-                    </div>
+                    {renderCommentBody()}
                 </div>
             </div>
         </div>

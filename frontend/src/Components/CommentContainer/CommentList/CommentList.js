@@ -32,6 +32,7 @@ const CommentList = (props) => {
                 </Typography>
                 {renderComments()}
             </Paper>
+
         </div>
     )
 }
