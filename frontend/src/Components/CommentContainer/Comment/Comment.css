@@ -1,0 +1,18 @@
+.comment-container {
+    display: flex;
+}
+
+.comment-head {
+    flex:1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.comment-body {
+    flex:15;
+}
+
+.comment-name-date {
+    display: flex;
+    flex-direction: row;
+}

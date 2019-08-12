@@ -1,20 +1,35 @@
-import React from 'react';
-
+import React, { useState } from 'react';
 import { TextField, Button } from "@material-ui/core";
 import useStyles from '../LoginSignupCompos/styles';
+import { withRouter } from "react-router";
+
+import { signup  } from "../../../Actions/Auth/authActions";
 
 const SignupPart = (props) => {
     const classes = useStyles();
 
+    let [userName, setUserName] = useState("");
+    let [email, setEmail] = useState("");
+    let [password, setPassword] = useState("");
+
+    const onsubmit = async() => {
+        let result = await signup({userName, email, password});
+        console.log(result);
+        if(result){
+            props.history.push('/login');
+        }
+    }
+
     return (
         <div className="d-flex flex-column mt-4 ">
-           
-           <TextField
+           <TextField   //needs to be abstracted out!!
                 id="outlined-name"
                 label="Username"
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                value={userName}
+                onChange={e => setUserName(e.target.value)} 
             />
             <TextField
                 id="outlined-name"
@@ -22,6 +37,8 @@ const SignupPart = (props) => {
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
             />
             <TextField
                 id="outlined-name"
@@ -30,12 +47,14 @@ const SignupPart = (props) => {
                 className={classes.textField}
                 margin="normal"
                 variant="outlined"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
             />
-            <Button variant="contained" color="primary" className={`${classes.button} mt-3 align-self-center`}>
+            <Button variant="contained" color="primary" className={`${classes.button} mt-3 align-self-center`} onClick={onsubmit}>
                 Signup
             </Button>
         </div>
     )
 }
 
-export default SignupPart;
+export default withRouter(SignupPart);
