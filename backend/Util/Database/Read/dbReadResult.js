@@ -8,6 +8,7 @@ module.exports = async(collection, query, projection, limit=0, sort={})=>{
            reject(connectionResult.err)
         } else {
             const database = connectionResult.res;
+            console.log(database);
             dbQuery(database,collection,query,projection,limit, sort)
             .then(res=>{
                 resolve(res);

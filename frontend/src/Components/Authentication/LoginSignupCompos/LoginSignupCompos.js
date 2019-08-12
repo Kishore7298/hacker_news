@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from "react-redux";
+import { withRouter } from "react-router";
 import { Typography, Paper } from "@material-ui/core";
+import userNameSelector from '../../../Utils/userNameSelector';
 
 import useStyles from './styles';
 
 const Login = (props)=>{
     const classes = useStyles();
+
+    let userNameSelect = useSelector(userNameSelector);
+
+    useEffect(()=>{
+        if(userNameSelect){
+            props.history.push('/');
+        } else {
+            //do nothing!
+        }
+    },[userNameSelect])
 
     return (
         <div className={`${classes.top}`}>
@@ -18,4 +31,4 @@ const Login = (props)=>{
     )
 }
 
-export default Login;
+export default withRouter(Login);

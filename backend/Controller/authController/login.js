@@ -16,7 +16,7 @@ module.exports = async (req, res)=>{
             })
         } else {
             //user is found!
-            let user = user[0];
+            let user = users[0];
             bcrypt.compare(password, user.password, (eror, boole)=>{
                 if(eror){
                     //password doesn't match
@@ -28,6 +28,7 @@ module.exports = async (req, res)=>{
                     let expiresInObj = {
                         expiresIn : '1 days' //token expiry 1 day
                     };
+                    delete user.password;
                     jwt.sign(user,'secret',expiresInObj,(err, token) => {
                         if(err){
                            console.error(err);

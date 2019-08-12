@@ -5,6 +5,7 @@ const dbInsert = require('../../Util/Database/Insert/dbInsertResult');
 
 module.exports = async (req, res)=>{
     let { userName, email, password  } = req.body;
+    console.log(req.body);
     //to verify if the user already exist!
     dbRead('users', {email}).then((users)=>{
         if(users.length){
@@ -34,12 +35,10 @@ module.exports = async (req, res)=>{
                 "message":"error while signing up"
             })
         })
-
     }).catch(err=>{
         console.error(err);
         res.status(500).json({
             "message":"error while signing up"
         })
     })
-
 }

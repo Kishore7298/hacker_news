@@ -1,5 +1,5 @@
-const dbConnection = require('./getDbConnection');
-const dbInsert = require('./getDbInsert');
+const dbConnection = require('../dbConnection');
+const dbInsert = require('./dbInsert');
 
 module.exports = async(collection, insertObject)=>{
     const connectionResult = await dbConnection();
