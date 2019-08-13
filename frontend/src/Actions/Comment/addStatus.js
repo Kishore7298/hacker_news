@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { IP } from "../../IPConfFrontend";
+import { snackbarAction } from "../Snackbar/snackbar";
 const ObjectId = require('mongodb').ObjectID;
+
 
 const _addAttributes = (object) => {
     let _id = ObjectId().toHexString();
@@ -51,7 +53,7 @@ const addStatus = object => async(dispatch) => {
         }
     } catch (error) {
         console.error(error);
-        //needs to be handled
+        dispatch(snackbarAction({type:"error", message:"error adding the comment"}))
     }
     
 }
@@ -72,8 +74,7 @@ const updateStatus = object => async(dispatch) => {
         })
         dispatch(editAction(object))
     } catch(error) {
-        console.error(error);
-        // needs to be handled
+        dispatch(snackbarAction({type:"error", message:"error updating the comment"}))
     }
 }
 
@@ -94,7 +95,7 @@ const replyStatus = (id,object) => async (dispatch) => {
         dispatch(replyAction(id, object));
     } catch (error) {
         console.error(error);
-        //handle   
+        dispatch(snackbarAction({type:"error", message:"error replying"}))
     }
 }
 
@@ -103,8 +104,7 @@ const initialFetch = () => async (dispatch) => {
         let response = await axios.get(`${IP}/api/v1/comment`);
         dispatch(initialFetchAction(response.data));
     } catch (error) {
-        console.error(error);
-        //needs to be handled
+        dispatch(snackbarAction({type:"error", message:"error fetching the comments"}));
     }
 }
 
