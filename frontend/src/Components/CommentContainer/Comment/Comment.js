@@ -9,8 +9,8 @@ import EditInput from '../EditInput/EditInput';
 const Comment = (props) => {
     let [mode, setMode] = useState("");
 
-    let { _id, userName, message, lastUpdatedTime, list } = props.comment;
-    let { setReplyModal, replyModal } = props;
+    let { _id, userName, userId, message, lastUpdatedTime, list } = props.comment;
+    let { setReplyModal, replyModal, userInfo } = props;
 
     let comments = useSelector(state => state.comments );
 
@@ -24,13 +24,24 @@ const Comment = (props) => {
                 let selectedComment = commments.filter((item)=>item._id === comment);
                 selectedComment = selectedComment[0];
                 return (
-                    <Comment comment={selectedComment} replyModal={replyModal} setReplyModal={setReplyModal} />
+                    <Comment comment={selectedComment} replyModal={replyModal} setReplyModal={setReplyModal} userInfo={userInfo}/>
                 )
             })
         }
         
     }
     
+    const renderEditButton = () => {
+        if(userId === userInfo._id){
+            return (
+                <IconButton onClick={()=>{setMode("edit")}}>
+                    <Edit />
+                </IconButton>
+            )
+        } else {
+            return null;
+        }
+    }
     
     const renderCommentBody = () => {
         if(mode === "") {
@@ -40,9 +51,7 @@ const Comment = (props) => {
                         {message}
                     </Typography>
                     <div className="comment-buttons">
-                        <IconButton onClick={()=>{setMode("edit")}}>
-                            <Edit />
-                        </IconButton>
+                        {renderEditButton()}
                         <IconButton onClick={()=>{setReplyModal(_id)}}>
                             <Reply />
                         </IconButton>

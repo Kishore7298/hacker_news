@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { IP } from "../../IPConfFrontend";
 const ObjectId = require('mongodb').ObjectID;
 
 const _addAttributes = (object) => {
@@ -7,34 +9,108 @@ const _addAttributes = (object) => {
     object.list = [];
 }
 
-const addStatus = object => dispatch => {
-    _addAttributes(object);
-    dispatch({
+const addStatusAction = (object) => {
+    return {
         type: 'ADD_STATUS',
         payload: object
-    })
+    }
 }
 
-const updateStatus = object => dispatch => {
-    dispatch({
+const initialFetchAction = (object) => {
+    return {
+        type:'INITIAL_FETCH',
+        payload:object
+    }
+}
+
+const editAction = (object) => {
+    return {
         type:'EDIT',
         payload: object
-    })
+    }
 }
 
-const replyStatus = (id,object) => dispatch => {
-    _addAttributes(object);
-    dispatch({
+const replyAction = (id, object) => {
+    return {
         type:'REPLY',
         payload:{
             _id:id,
             object
         }
-    })
+    }
+}
+
+const addStatus = object => async(dispatch) => {
+    _addAttributes(object);
+    try {
+        let response = await axios.post(`${IP}/api/v1/comment/`, object);
+        if(response){
+            dispatch(addStatusAction(object));
+        } else {
+            throw new Error("response not found");
+        }
+    } catch (error) {
+        console.error(error);
+        //needs to be handled
+    }
+    
+}
+
+const updateStatus = object => async(dispatch) => {
+    try {
+        let response = await axios({
+            method:"put",
+            url:`${ IP }/api/v1/comment`,
+            params: {
+                id: object.id
+            },
+            data: {
+                updateObj: {
+                    message: object.message
+                }
+            }
+        })
+        dispatch(editAction(object))
+    } catch(error) {
+        console.error(error);
+        // needs to be handled
+    }
+}
+
+const replyStatus = (id,object) => async (dispatch) => {
+    _addAttributes(object);
+    try {
+        let updateResponse = await axios({
+            method:"put",
+            url:`${ IP }/api/v1/comment/updatelist`,
+            params: {
+                id,
+            },
+            data:{
+                newId: object._id
+            }
+        });
+        let response = await axios.post(`${IP}/api/v1/comment/`, object);
+        dispatch(replyAction(id, object));
+    } catch (error) {
+        console.error(error);
+        //handle   
+    }
+}
+
+const initialFetch = () => async (dispatch) => {
+    try {
+        let response = await axios.get(`${IP}/api/v1/comment`);
+        dispatch(initialFetchAction(response.data));
+    } catch (error) {
+        console.error(error);
+        //needs to be handled
+    }
 }
 
 export {
     addStatus,
     updateStatus,
-    replyStatus
+    replyStatus,
+    initialFetch
 }

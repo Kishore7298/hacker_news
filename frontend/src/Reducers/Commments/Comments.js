@@ -15,6 +15,12 @@ let initialState = {
 
 const comments = (state=initialState, action) => {
     switch(action.type){
+        case 'INITIAL_FETCH':
+            return {
+                ...state,
+                comments: [...action.payload.comments]
+            }
+            break;
         case 'ADD_STATUS':
             return {
                 ...state,
