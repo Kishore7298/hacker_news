@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, connect } from "react-redux";
+import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
@@ -24,6 +25,14 @@ const Navbar = (props)=>{
   let [userName, setUserName] = useState("");
 
   let userNameSelect = useSelector(userNameSelector);
+  let snackbarSelector = useSelector(state => state.Snackbar);
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+      if(snackbarSelector.type){
+        enqueueSnackbar(snackbarSelector.message, {variant:snackbarSelector.type})
+      }
+  },[snackbarSelector.message])
 
   useEffect(()=>{
     setUserName(userNameSelect);

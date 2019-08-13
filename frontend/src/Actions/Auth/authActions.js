@@ -1,7 +1,9 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
+
 import setTokenToHeader from '../../Utils/setTokenToHeader';
 import { IP } from './../../IPConfFrontend';
+import { snackbarAction } from "../Snackbar/snackbar";
 
 export const setCurrentUser = decoded  =>{
  return {
@@ -22,12 +24,14 @@ export const login =  (data) => async dispatch => {
             //Decode token to get user data
             const decoded = jwt_decode(token);
             //set Current User
+            dispatch(snackbarAction({type:'success', message:"Authentication successful"}))
             dispatch(setCurrentUser(decoded));
             return res;
         } else {
             throw new Error("token not found");
         }
     } catch (error) {
+        dispatch(snackbarAction({type:'error', message:"incorrect email or password"}))
         console.error(error);
         //needs to be handled
     }
