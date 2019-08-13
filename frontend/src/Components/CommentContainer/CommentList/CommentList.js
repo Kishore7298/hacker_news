@@ -21,8 +21,9 @@ const CommentList = (props) => {
     let [ replyModal, setReplyModal ] = useState("")
     const renderComments = () => {
         return props.statuses.map((comment)=>{
-            return <Comment comment={comment} replyModal={replyModal} setReplyModal={setReplyModal} />
+            return <Comment comment={comment} replyModal={replyModal} setReplyModal={setReplyModal} userInfo={props.userInfo}/>
         })
+
     }
     const classes = useStyles();
     return (
