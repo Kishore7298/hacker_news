@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
 import { TextField, Button } from "@material-ui/core";
 import useStyles from '../LoginSignupCompos/styles';
 import { withRouter } from "react-router";
@@ -7,6 +8,7 @@ import { signup  } from "../../../Actions/Auth/authActions";
 
 const SignupPart = (props) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     let [userName, setUserName] = useState("");
     let [email, setEmail] = useState("");
@@ -15,7 +17,22 @@ const SignupPart = (props) => {
     const onsubmit = async() => {
         let result = await signup({userName, email, password});
         if(result){
+            dispatch({
+                type:'SNACKBAR',
+                payload:{
+                    type:'success',
+                    message:'Signup successfull'
+                }
+            })
             props.history.push('/login');
+        } else {
+            dispatch({
+                type:'SNACKBAR',
+                payload:{
+                    type:'error',
+                    message:'signup failed'
+                }
+            })
         }
     }
 
